@@ -1,0 +1,52 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+bool isMagicSquare(int square[3][3]) {
+    int magicSum = 15; // Suma magiczna dla kwadratu 3x3
+
+    // Sprawdzenie wierszy i kolumn
+    for (int i = 0; i < 3; i++) {
+        int rowSum = 0, colSum = 0;
+        for (int j = 0; j < 3; j++) {
+            rowSum += square[i][j];
+            colSum += square[j][i];
+        }
+        if (rowSum != magicSum || colSum != magicSum) {
+            return false;
+        }
+    }
+
+    // Sprawdzenie przekątnych
+    if (square[0][0] + square[1][1] + square[2][2] != magicSum ||
+        square[0][2] + square[1][1] + square[2][0] != magicSum) {
+        return false;
+    }
+
+    return true;
+}
+
+int main() {
+    ifstream inputFile("plik.txt");
+    if (!inputFile) {
+        cerr << "Nie można otworzyć pliku!" << endl;
+        return 1;
+    }
+
+    int square[3][3];
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            inputFile >> square[i][j];
+        }
+    }
+
+    inputFile.close();
+
+    if (isMagicSquare(square)) {
+        cout << "Kwadrat jest magiczny!" << endl;
+    } else {
+        cout << "Kwadrat nie jest magiczny." << endl;
+    }
+
+    return 0;
+}
